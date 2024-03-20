@@ -13,7 +13,7 @@ router.get('/:id', booksController.getOneBook);
 // Routes avec authentification
 router.post('/', auth, multer,resizeImg, booksController.createBook);
 router.put('/:id', auth, multer,resizeImg, booksController.modifyBook);
-router.delete('/:id', auth, booksController.deleteBook);
+router.delete('/:id', auth,multer, booksController.deleteBook);
 router.post('/:id/rating', auth, booksController.rateBook);
 
 module.exports = router;

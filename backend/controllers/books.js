@@ -73,7 +73,7 @@ exports.modifyBook = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   };
 
-exports.deleteBook = (req, res, next) => {
+  exports.deleteBook = (req, res, next) => {
     Book.findOne({ _id: req.params.id })
         .then(book => {
             if (!book) {
@@ -84,15 +84,20 @@ exports.deleteBook = (req, res, next) => {
             }
 
             const filename = book.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, (err) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).json({ message: 'Erreur lors de la suppression de l\'image' });
-                }
-                book.deleteOne({ _id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Livre supprimé avec succès' }))
-                    .catch(error => res.status(400).json({ error }));
-            });
+            const filePath = `images/${filename}`;
+
+            // Supprime d'abord le livre de la base de données
+            book.deleteOne()
+                .then(() => {
+                    // Tente ensuite de supprimer le fichier image
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            console.log(`Erreur lors de la suppression de l'image: ${err}`);
+                        }
+                        res.status(200).json({ message: 'Livre supprimé avec succès' });
+                    });
+                })
+                .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
 };
