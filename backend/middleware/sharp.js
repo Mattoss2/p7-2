@@ -1,7 +1,7 @@
 const sharp = require('sharp');
 const fs = require('fs');
 
-const resizeAndConvertToWebp = (req, res, next) => {
+const resizeImg = (req, res, next) => {
   // Vérifie si un fichier est téléchargé
   if (!req.file) {
     return next();
@@ -14,8 +14,7 @@ const resizeAndConvertToWebp = (req, res, next) => {
     .toFile('images/' + req.file.filename.replace(/\.(jpg|jpeg|png)$/, '.webp'))
     // Une fois que ces opérations sont terminées, on exécute le .then
     .then(() => {
-      // Modification du nom de fichier avec l'extension WebP
-      req.file.filename = req.file.filename.replace(/\.(jpg|jpeg|png)$/, '.webp');
+      
 
       // Supprimer le fichier d'origine après la conversion en WebP
       fs.unlink(req.file.path, (err) => {
@@ -31,4 +30,4 @@ const resizeAndConvertToWebp = (req, res, next) => {
     });
 };
 
-module.exports = resizeAndConvertToWebp;
+module.exports = resizeImg;
