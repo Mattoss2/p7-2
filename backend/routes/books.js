@@ -12,7 +12,7 @@ router.get('/bestrating', booksController.getBestRatingBooks);
 router.get('/:id', booksController.getOneBook);
 // Routes avec authentification
 router.post('/', auth, multer,resizeImg, booksController.createBook);
-router.put('/:id', auth, multer,resizeImg, booksController.modifyBook);
+router.put('/:id', auth, multer, booksController.modifyBook);
 router.delete('/:id', auth,multer, booksController.deleteBook);
 router.post('/:id/rating', auth, booksController.rateBook);
 
