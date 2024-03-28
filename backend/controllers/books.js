@@ -152,7 +152,7 @@ exports.rateBook = (req, res, next) => {
       const sumRatings = book.ratings.reduce((sum, r) => sum + r.grade, 0); // méthode réduce est une fonction de réduction qui prend une fonction de rappel ((sum, r) => sum + r.grade) et un argument final (0) qui représente la valeur initiale de sum
       const newAverageRating = sumRatings / totalRatings;
       // eslint-disable-next-line no-param-reassign
-      book.averageRating = parseFloat(newAverageRating.toFixed(2)); // parseFloat converti string en number & toFixed(2) limite à deux decimales
+      book.averageRating = parseFloat(newAverageRating.toFixed(0)); // parseFloat converti string en number & toFixed(2) limite à deux decimales
 
       // Sauvegarder les modifications _ Promesse renvoyant le livre mis à jour
       return book.save()
